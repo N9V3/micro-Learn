@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download e Transcrição de Vídeos do Instagram</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Download e Transcrição Vídeos do Instagram</h1>
+        <form id="urlForm">
+            <label for="urls">Insira as URLs do Instagram (separadas por vírgula):</label>
+            <textarea id="urls" name="urls" rows="4" cols="50" required></textarea>
+            <button type="submit">Processar</button>
+        </form>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        document.getElementById('urlForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const urls = document.getElementById('urls').value;
+            fetch('/processar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ urls: urls }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status').innerText = "Processo iniciado. Veja o terminal para detalhes.";
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+        });
+    </script>
+</body>
+</html>
+
